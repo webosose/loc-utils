@@ -1,0 +1,14 @@
+# @@@LICENSE
+#
+#      Copyright (c) 2012-2014 LG Electronics Inc. All Rights Reserved
+#
+# LICENSE@@@
+
+libdir=@WEBOS_INSTALL_LIBDIR@
+includedir=@WEBOS_INSTALL_INCLUDEDIR@
+
+Name: loc-utils
+Description: Utility library of location framework
+Version: @WEBOS_COMPONENT_VERSION@
+Libs: -L${libdir} -lloc_utils
+Cflags: -I${includedir}/loc-utils @PMLOG_USAGE_CFLAGS@

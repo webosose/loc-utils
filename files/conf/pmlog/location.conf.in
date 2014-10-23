@@ -1,0 +1,63 @@
+{
+    "contexts" : [
+        {
+            "name" : "geocluelgecellservice",
+            "level" : "info",
+            "logProcessIds" : true,
+            "logThreadIds" : true,
+            "logToConsole" : true,
+            "rules" : [
+                {"filter" : "*.*", "output" : "location-log"}
+            ]
+        },
+        {
+            "name" : "geocluelgegpsservice",
+            "level" : "info",
+            "logProcessIds" : true,
+            "logThreadIds" : true,
+            "logToConsole" : true,
+            "rules" : [
+                {"filter" : "*.*", "output" : "location-log"}
+            ]
+        },
+        {
+            "name" : "geocluelgelbsservice",
+            "level" : "info",
+            "logProcessIds" : true,
+            "logThreadIds" : true,
+            "logToConsole" : true,
+            "rules" : [
+                {"filter" : "*.*", "output" : "location-log"}
+            ]
+        },
+        {
+            "name" : "geocluelgewifiservice",
+            "level" : "info",
+            "logProcessIds" : true,
+            "logThreadIds" : true,
+            "logToConsole" : true,
+            "rules" : [
+                {"filter" : "*.*", "output" : "location-log"}
+            ]
+        },
+        {
+            "name" : "location",
+            "level" : "info",
+            "logProcessIds" : true,
+            "logThreadIds" : true,
+            "logToConsole" : true,
+            "rules" : [
+                {"filter" : "*.*", "output" : "location-log"}
+            ]
+        }
+    ],
+
+    "outputs" : [
+        {
+            "name" : "location-log",
+            "file" : "@WEBOS_INSTALL_LOGDIR@/location.log",
+            "maxSize" : 2000,
+            "rotations" : 5
+        }
+    ]
+}
