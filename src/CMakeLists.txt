@@ -8,7 +8,8 @@ set(LOC_UTILS_NAME loc_utils)
 set(LOC_UTILS_PATH ${CMAKE_INSTALL_PREFIX}/lib/)
 set(LOC_UTILS_SRC loc_filter.c
                   loc_geometry.c
-                  loc_http.c)
+                  loc_http.c
+                  loc_logger.c)
 
 set(LIBRARIES ${GLIB2_LDFLAGS} ${LIBCURL_LDFLAGS} ${GLIBCURL_LDFLAGS} ${PMLOGLIB_LDFLAGS})
 add_library(${LOC_UTILS_NAME} SHARED ${LOC_UTILS_SRC})

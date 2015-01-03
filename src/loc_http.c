@@ -27,7 +27,7 @@ static size_t cbWriteMemory(char *, size_t, size_t, void *);
 
 
 
-HttpReqTask *loc_http_task_create(const char *headers, int size)
+HttpReqTask *loc_http_task_create(const char **headers, int size)
 {
     HttpReqTask *task = NULL;
     int i;
@@ -46,8 +46,6 @@ HttpReqTask *loc_http_task_create(const char *headers, int size)
                 task->curlDesc.headerList = curl_slist_append(task->curlDesc.headerList, gHttpHeader[i]);
             }
         }
-
-
     }
 
     return task;
@@ -171,7 +169,6 @@ gboolean loc_http_add_request(HttpReqTask *task, gboolean sync)
         return FALSE;
 
     if (task->post_data != NULL) {
-
         if ((curlRc = curl_easy_setopt(task->curlDesc.handle, CURLOPT_POST, 1)) != CURLE_OK) {
             LS_LOG_ERROR("curl set opt: CURLOPT_POST failed [%s]\n", curl_easy_strerror(curlRc));
             return FALSE;

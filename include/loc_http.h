@@ -33,7 +33,7 @@ typedef void (*ResponseCallback)(HttpReqTask *task, void *user_data);
 
 
 // create a HttpReqTask object
-HttpReqTask *loc_http_task_create(const char *headers, int size);
+HttpReqTask *loc_http_task_create(const char **headers, int size);
 
 // destroy the given request task
 void loc_http_task_destroy(HttpReqTask **task_ref);
