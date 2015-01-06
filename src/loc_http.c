@@ -120,7 +120,7 @@ gboolean loc_http_task_prepare_connection(HttpReqTask **task_ref, char *url)
     if ((curlRc = curl_easy_setopt(task->curlDesc.handle, CURLOPT_SSL_VERIFYPEER, NO_CERTIFICATE_VERIFY)) != CURLE_OK)
         LS_LOG_WARNING("curl set opt: CURLOPT_SSL_VERIFYPEER failed [%s]\n", curl_easy_strerror(curlRc));
 
-    if ((curlRc = curl_easy_setopt(task->curlDesc.handle, CURLOPT_SSL_VERIFYHOST, SSL_VERIFYHOST)) != CURLE_OK)
+    if ((curlRc = curl_easy_setopt(task->curlDesc.handle, CURLOPT_SSL_VERIFYHOST, NO_SSL_VERIFYHOST)) != CURLE_OK)
         LS_LOG_WARNING("curl set opt: CURLOPT_SSL_VERIFYHOST failed [%s]\n", curl_easy_strerror(curlRc));
 
     if ((curlRc = curl_easy_setopt(task->curlDesc.handle, CURLOPT_FOLLOWLOCATION, TRUE)) != CURLE_OK)
