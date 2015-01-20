@@ -90,7 +90,6 @@ gboolean loc_http_task_prepare_connection(HttpReqTask **task_ref, char *url)
     if (!task || !url)
         return FALSE;
 
-    LS_LOG_DEBUG("url: %s\n", url);
 
     if ((curlRc = curl_easy_setopt(task->curlDesc.handle, CURLOPT_URL, url)) != CURLE_OK) {
         LS_LOG_ERROR("curl set opt: CURLOPT_URL failed [%s]\n", curl_easy_strerror(curlRc));
