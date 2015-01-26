@@ -8,7 +8,7 @@
 #include <loc_logger.h>
 
 #define MAX_PATH_LOG_FILE       256
-#define DEFAULT_LOG_DIR         "/var/location"
+#define DEFAULT_LOG_DIR         "/media/external"
 #define DEFAULT_LOG_TITLE       "unnamed"
 
 struct _data_logger_t {
