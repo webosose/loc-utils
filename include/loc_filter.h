@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013 LG Electronics Inc. All Rights Reserved.
+ * Copyright (c) 2015 LG Electronics Inc. All Rights Reserved.
  */
 
 #ifndef _LOC_FILTER_H_

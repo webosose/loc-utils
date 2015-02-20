@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2014 LG Electronics Inc. All Rights Reserved.
+ * Copyright (c) 2015 LG Electronics Inc. All Rights Reserved.
  */
 #ifndef _LOC_HTTP_H_
 #define _LOC_HTTP_H_

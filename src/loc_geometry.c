@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2014 LG Electronics Inc. All Rights Reserved.
+ * Copyright (c) 2015 LG Electronics Inc. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>

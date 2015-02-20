@@ -1,6 +1,6 @@
 # @@@LICENSE
 #
-#   Copyright (c) 2012-2014 LG Electronics Inc. All Rights Reserved
+#   Copyright (c) 2015 LG Electronics Inc. All Rights Reserved
 #
 # LICENSE@@@
 
@@ -21,6 +21,9 @@ add_definitions(${LIBCURL_CFLAGS})
 
 pkg_check_modules(GLIBCURL REQUIRED glibcurl)
 add_definitions(${GLIBCURL_CFLAGS})
+
+pkg_check_modules(OPENSSL REQUIRED openssl)
+add_definitions(${OPENSSL_CFLAGS})
 
 pkg_check_modules(PMLOGLIB REQUIRED PmLogLib)
 if (${PMLOGLIB_VERSION} VERSION_LESS 3.0.0)
