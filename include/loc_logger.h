@@ -20,10 +20,17 @@ void loc_logger_start_logging(data_logger_t **logger_ref,
                               const char *directory,
                               const char *log_title);
 
+void loc_logger_start_logging_with_rotation(data_logger_t **logger_ref,
+                                            const char *directory,
+                                            const char *log_title,
+                                            int max_rotation,
+                                            int max_size);
+
 void loc_logger_stop_logging(data_logger_t **logger_ref);
 
 void loc_logger_feed_data(data_logger_t **logger_ref, char *log_data, int size);
 
+void loc_logger_feed_log(data_logger_t **logger_ref, char *log, int size);
 
 
 #ifdef __cplusplus
