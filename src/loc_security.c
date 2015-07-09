@@ -52,8 +52,8 @@ int loc_security_openssl_decrypt_file(const char *file_path, unsigned char **dec
     if (1 != EVP_DecryptInit_ex(ctx,
                                 EVP_aes_256_cbc(),
                                 NULL,
-                                "9876543210ABCDEFGHIJ@H&G_P@)901",
-                                "Zcbmkgdrl_$^&opqs"))
+                                (unsigned char *)"9876543210ABCDEFGHIJ@H&G_P@)901",
+                                (unsigned char *)"Zcbmkgdrl_$^&opqs"))
         goto CLEANUP;
 
     /* Provide the message to be decrypted, and obtain the plaintext output.*/

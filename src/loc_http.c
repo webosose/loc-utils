@@ -260,7 +260,7 @@ static void cbGlibcurl(void* data)
 
     while (1) {
         msg = curl_multi_info_read(glibcurl_handle(), &inQueue);
-        LS_LOG_DEBUG("msg = %d, inQueue = %d\n", msg, inQueue);
+        LS_LOG_DEBUG("msg = %p, inQueue = %d\n", msg, inQueue);
         if (msg == 0)
             break;
 

@@ -483,7 +483,6 @@ UTMCoordinates wgs84_to_tm(GEOCoordinates radCoordinates, double centralMeridian
 
     double N, nu2, ep2, t, t2, l;
     double l3coef, l4coef, l5coef, l6coef, l7coef, l8coef;
-    double tmp;
 
     double phi = radCoordinates.latitude;
     double lambda = radCoordinates.longitude;
@@ -499,7 +498,6 @@ UTMCoordinates wgs84_to_tm(GEOCoordinates radCoordinates, double centralMeridian
 
     t = tan(phi);
     t2 = t * t;
-    tmp = (t2 * t2 * t2) - pow(t, 6.0);
 
     l = lambda - centralMeridian;
 
