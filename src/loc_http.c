@@ -25,7 +25,31 @@ static const char *gHttpHeader[MAX_HTTPHEADER] = { "Accept: application/json",
 static void cbGlibcurl(void* data);
 static size_t cbWriteMemory(char *, size_t, size_t, void *);
 
+HttpReqTask *loc_create_http_task(const char **headers, int size, void *message, void *userdata)
+{
+    HttpReqTask *task = NULL;
+    int i;
 
+    task = (HttpReqTask *)malloc(sizeof(HttpReqTask));
+    if (task) {
+        memset(task, 0, sizeof(HttpReqTask));
+
+        task->curlDesc.handle = curl_easy_init();
+        task->message = message;
+        task->recepient = userdata;
+        if (headers != NULL) {
+            for (i = 0; i < size; i++) {
+                task->curlDesc.headerList = curl_slist_append(task->curlDesc.headerList, headers[i]);
+            }
+        } else {
+            for (i = 0; i < MAX_HTTPHEADER; i++) {
+                task->curlDesc.headerList = curl_slist_append(task->curlDesc.headerList, gHttpHeader[i]);
+            }
+        }
+    }
+
+    return task;
+}
 
 HttpReqTask *loc_http_task_create(const char **headers, int size)
 {
@@ -122,6 +146,11 @@ gboolean loc_http_task_prepare_connection(HttpReqTask **task_ref, char *url)
 
     if ((curlRc = curl_easy_setopt(task->curlDesc.handle, CURLOPT_FOLLOWLOCATION, TRUE)) != CURLE_OK)
         LS_LOG_WARNING("curl set opt: CURLOPT_FOLLOWLOCATION failed [%s]\n", curl_easy_strerror(curlRc));
+    if ((curlRc = curl_easy_setopt(task->curlDesc.handle, CURLOPT_LOW_SPEED_LIMIT,10L)) != CURLE_OK )
+        LS_LOG_WARNING("curl set opt: CURLOPT_LOW_SPEED_LIMIT failed [%d]\n",curlRc);
+
+    if ((curlRc = curl_easy_setopt(task->curlDesc.handle, CURLOPT_LOW_SPEED_TIME,10L)) != CURLE_OK )
+        LS_LOG_WARNING("curl set opt: CURLOPT_LOW_SPEED_TIME failed [%d]\n",curlRc);
 
     return TRUE;
 }
@@ -286,7 +315,6 @@ static void cbGlibcurl(void* data)
             if (gResponseCb)
                 (*gResponseCb)(task, data);
 
-            loc_http_remove_request(task);
         }
     }
 

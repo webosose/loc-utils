@@ -27,6 +27,8 @@ typedef struct {
     char *post_data;
     size_t responseSize;
     char *responseData;
+    void *message;
+    void *recepient;
 } HttpReqTask;
 
 typedef void (*ResponseCallback)(HttpReqTask *task, void *user_data);
@@ -35,15 +37,14 @@ typedef void (*ResponseCallback)(HttpReqTask *task, void *user_data);
 // create a HttpReqTask object
 HttpReqTask *loc_http_task_create(const char **headers, int size);
 
+// create a HttpReqTask object new implementation for new design
+HttpReqTask *loc_create_http_task(const char **headers, int size, void *message, void *userdata);
+
 // destroy the given request task
 void loc_http_task_destroy(HttpReqTask **task_ref);
 
 // prepare curl connection with the given url
 gboolean loc_http_task_prepare_connection(HttpReqTask **task_ref, char *url);
-
-
-
-
 
 // start http utility
 void loc_http_start();
