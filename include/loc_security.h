@@ -13,8 +13,8 @@ extern "C" {
 #define LOC_SECURITY_ERROR_FAILURE      -1
 
 
-// OPENSSL - Decryption
-int loc_security_openssl_decrypt_file(const char *file_path, unsigned char **decrypted);
+// base64 - Decryption
+int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted);
 
 
 
