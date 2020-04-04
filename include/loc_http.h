@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 #include <glib.h>
-#include <glibcurl.h>
+#include <loc_curl.h>
 
 #define HTTP_STATUS_CODE_SUCCESS    200
 

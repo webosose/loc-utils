@@ -19,9 +19,6 @@ add_definitions(${GLIB2_CFLAGS})
 pkg_check_modules(LIBCURL REQUIRED libcurl)
 add_definitions(${LIBCURL_CFLAGS})
 
-pkg_check_modules(GLIBCURL REQUIRED glibcurl)
-add_definitions(${GLIBCURL_CFLAGS})
-
 pkg_check_modules(PMLOGLIB REQUIRED PmLogLib)
 if (${PMLOGLIB_VERSION} VERSION_LESS 3.0.0)
     set(PMLOG_USAGE_CFLAGS -DPMLOG_USE_DEPRECATED)

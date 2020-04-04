@@ -22,7 +22,7 @@ static const char *gHttpHeader[MAX_HTTPHEADER] = { "Accept: application/json",
                                                    "Content-Type: application/json",
                                                    "charsets: utf-8" };
 
-static void cbGlibcurl(void* data);
+static void cbLocCurl(void* data);
 static size_t cbWriteMemory(char *, size_t, size_t, void *);
 
 HttpReqTask *loc_create_http_task(const char **headers, int size, void *message, void *userdata)
@@ -160,7 +160,7 @@ void loc_http_start()
     if (gIsInitialized)
         return;
 
-    glibcurl_init();
+    loc_curl_init();
     gIsInitialized = TRUE;
 }
 
@@ -169,7 +169,7 @@ void loc_http_stop()
     if (!gIsInitialized)
         return;
 
-    glibcurl_cleanup();
+    loc_curl_cleanup();
 
     if (gHttpTasks) {
         g_hash_table_destroy(gHttpTasks);
@@ -182,7 +182,7 @@ void loc_http_stop()
 void loc_http_set_callback(ResponseCallback response_cb, void *user_data)
 {
     gResponseCb = response_cb;
-    glibcurl_set_callback(cbGlibcurl, user_data);
+    loc_curl_set_callback(cbLocCurl, user_data);
 }
 
 gboolean loc_http_add_request(HttpReqTask *task, gboolean sync)
@@ -252,8 +252,8 @@ gboolean loc_http_add_request(HttpReqTask *task, gboolean sync)
                                                NULL);
         }
 
-        if ((curlMRc = glibcurl_add(task->curlDesc.handle)) != CURLM_OK) {
-            LS_LOG_ERROR("glibcurl_add: failed [%s]\n", curl_multi_strerror(curlMRc));
+        if ((curlMRc = loc_curl_add(task->curlDesc.handle)) != CURLM_OK) {
+            LS_LOG_ERROR("loc_curl_add: failed [%s]\n", curl_multi_strerror(curlMRc));
 
             return FALSE;
         }
@@ -272,23 +272,23 @@ void loc_http_remove_request(HttpReqTask *task)
     if (task->curlDesc.handle == NULL)
         return;
 
-    glibcurl_remove(task->curlDesc.handle);
+    loc_curl_remove(task->curlDesc.handle);
 
     if (gHttpTasks)
         g_hash_table_remove(gHttpTasks, task->curlDesc.handle);
 }
 
-static void cbGlibcurl(void* data)
+static void cbLocCurl(void* data)
 {
     CURLMsg* msg = NULL;
     CURLcode curlRc = CURLE_OK;
     int inQueue = 0;
     HttpReqTask *task = NULL;
 
-    LS_LOG_DEBUG("cbGlibcurl start\n");
+    LS_LOG_DEBUG("cbLocCurl start\n");
 
     while (1) {
-        msg = curl_multi_info_read(glibcurl_handle(), &inQueue);
+        msg = curl_multi_info_read(loc_curl_handle(), &inQueue);
         LS_LOG_DEBUG("msg = %p, inQueue = %d\n", msg, inQueue);
         if (msg == 0)
             break;
@@ -318,7 +318,7 @@ static void cbGlibcurl(void* data)
         }
     }
 
-    LS_LOG_DEBUG("cbGlibcurl end\n");
+    LS_LOG_DEBUG("cbLoccurl end\n");
 }
 
 static size_t cbWriteMemory(char *ptr, size_t size, size_t nmemb, void *userdata)
