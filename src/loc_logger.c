@@ -49,10 +49,10 @@ void rotate_file(data_logger_t *logger)
         logger->rotation = 1;
 
         while (logger->rotation < logger->max_rotation) {
-            sprintf(file_old, "%s/%s.%d", logger->directory, logger->title_name, logger->rotation);
-            sprintf(file_new, "%s/%s.%d", logger->directory, logger->title_name, logger->rotation - 1);
+            snprintf(file_old, sizeof(file_old), "%s/%s.%d", logger->directory, logger->title_name, logger->rotation);
+            snprintf(file_new, sizeof(file_new), "%s/%s.%d", logger->directory, logger->title_name, logger->rotation - 1);
 
-            rename(file_old, file_new);
+            (void)rename(file_old, file_new);
 
             logger->rotation++;
         }
@@ -65,12 +65,12 @@ void rotate_file(data_logger_t *logger)
         logger->log_handle = NULL;
     }
 
-    sprintf(file_old, "%s/%s", logger->directory, logger->title_name);
-    sprintf(file_new, "%s/%s.%d", logger->directory, logger->title_name, logger->rotation);
+    snprintf(file_old, sizeof(file_old), "%s/%s", logger->directory, logger->title_name);
+    snprintf(file_new, sizeof(file_new), "%s/%s.%d", logger->directory, logger->title_name, logger->rotation);
 
-    rename(file_old, file_new);
+    (void)rename(file_old, file_new);
 
-    sprintf(file_new, "%s/%s", logger->directory, logger->title_name);
+    snprintf(file_new, sizeof(file_new), "%s/%s", logger->directory, logger->title_name);
     logger->log_handle = fopen(file_new, "a");
 
     logger->rotation++;
@@ -120,10 +120,10 @@ void loc_logger_start_logging(data_logger_t **logger_ref,
 
     memset(logger->directory, 0, sizeof(char)*MAX_DIR_PATH);
     memset(logger->title_name, 0, sizeof(char)*MAX_TITLE_NAME);
-    strcpy(logger->directory, directory ? directory : DEFAULT_LOG_DIR);
-    strcpy(logger->title_name, log_title ? log_title : DEFAULT_LOG_TITLE);
+    strncpy(logger->directory, directory ? directory : DEFAULT_LOG_DIR, sizeof(logger->directory));
+    strncpy(logger->title_name, log_title ? log_title : DEFAULT_LOG_TITLE, sizeof(logger->title_name));
 
-    sprintf(file_path, "%s/%s_%04d-%02d-%02d_%02d-%02d-%02d.log",
+    snprintf(file_path, sizeof(file_path), "%s/%s_%04d-%02d-%02d_%02d-%02d-%02d.log",
             logger->directory,
             logger->title_name,
             timeinfo->tm_year + 1900, timeinfo->tm_mon + 1,
@@ -150,14 +150,14 @@ void loc_logger_start_logging_with_rotation(data_logger_t **logger_ref,
 
     memset(logger->directory, 0, sizeof(char)*MAX_DIR_PATH);
     memset(logger->title_name, 0, sizeof(char)*MAX_TITLE_NAME);
-    strcpy(logger->directory, directory ? directory : DEFAULT_LOG_DIR);
-    strcpy(logger->title_name, log_title ? log_title : DEFAULT_LOG_TITLE);
+    strncpy(logger->directory, directory ? directory : DEFAULT_LOG_DIR, sizeof(logger->directory));
+    strncpy(logger->title_name, log_title ? log_title : DEFAULT_LOG_TITLE, sizeof(logger->title_name));
     logger->max_rotation = max_rotation;
     logger->max_size = max_size;
 
     current_rotation = 0;
     while (current_rotation < max_rotation) {
-        sprintf(file_path, "%s/%s.%d", logger->directory, logger->title_name, current_rotation);
+        snprintf(file_path, sizeof(file_path), "%s/%s.%d", logger->directory, logger->title_name, current_rotation);
 
         if (access(file_path, R_OK) != 0)
             break;
@@ -167,7 +167,7 @@ void loc_logger_start_logging_with_rotation(data_logger_t **logger_ref,
 
     logger->rotation = current_rotation;
 
-    sprintf(file_path, "%s/%s", logger->directory, logger->title_name);
+    snprintf(file_path, sizeof(file_path), "%s/%s", logger->directory, logger->title_name);
     logger->log_handle = fopen(file_path, "a");
 }
 

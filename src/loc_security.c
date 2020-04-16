@@ -38,7 +38,7 @@ void decodeblock(unsigned char in[], char *clrstr)
     out[1] = in[1] << 4 | in[2] >> 2;
     out[2] = in[2] << 6 | in[3] >> 0;
     out[3] = '\0';
-    strncat(clrstr, out, sizeof(out));
+    strncat(clrstr, (const char*)out, 4);
 
 }
 
@@ -52,9 +52,9 @@ int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted)
     char *charval = 0;
     unsigned char *cipher = NULL;
     char clrdst[1024] = "";
-    unsigned char decoderinput[4];
+    unsigned char decoderinput[4] = "";
     FILE *inFile = NULL;
-    char encodingtabe[TABLELEN + 1] = BASE64CHARSET;
+    char encodingtabe[TABLELEN + 2] = BASE64CHARSET;
 
     if (!file_path)
         return LOC_SECURITY_ERROR_FAILURE;
@@ -66,6 +66,9 @@ int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted)
 
     fseek(inFile, 0L, SEEK_END);
     cipherLen = ftell(inFile);
+    if (cipherLen < 0)
+        goto CLEANUP;
+
     rewind(inFile);
 
     /* allocate memory for entire content */
@@ -77,6 +80,7 @@ int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted)
     if (1 != fread(cipher, cipherLen, 1, inFile))
         goto CLEANUP;
 
+    cipher[sizeof(cipher)-1] = '\0';
     clrdst[0] = '\0';
     phase = 0;
     index=0;
@@ -99,7 +103,7 @@ int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted)
      index++;
     }//end of while
 
-    *decrypted = strdup(clrdst);
+    *decrypted = (unsigned char *)strdup(clrdst);
 
     err = LOC_SECURITY_ERROR_SUCCESS;
 
