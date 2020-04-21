@@ -120,8 +120,8 @@ void loc_logger_start_logging(data_logger_t **logger_ref,
 
     memset(logger->directory, 0, sizeof(char)*MAX_DIR_PATH);
     memset(logger->title_name, 0, sizeof(char)*MAX_TITLE_NAME);
-    strncpy(logger->directory, directory ? directory : DEFAULT_LOG_DIR, sizeof(logger->directory));
-    strncpy(logger->title_name, log_title ? log_title : DEFAULT_LOG_TITLE, sizeof(logger->title_name));
+    strncpy(logger->directory, directory ? directory : DEFAULT_LOG_DIR, sizeof(logger->directory)-1);
+    strncpy(logger->title_name, log_title ? log_title : DEFAULT_LOG_TITLE, sizeof(logger->title_name)-1);
 
     snprintf(file_path, sizeof(file_path), "%s/%s_%04d-%02d-%02d_%02d-%02d-%02d.log",
             logger->directory,
@@ -150,8 +150,8 @@ void loc_logger_start_logging_with_rotation(data_logger_t **logger_ref,
 
     memset(logger->directory, 0, sizeof(char)*MAX_DIR_PATH);
     memset(logger->title_name, 0, sizeof(char)*MAX_TITLE_NAME);
-    strncpy(logger->directory, directory ? directory : DEFAULT_LOG_DIR, sizeof(logger->directory));
-    strncpy(logger->title_name, log_title ? log_title : DEFAULT_LOG_TITLE, sizeof(logger->title_name));
+    strncpy(logger->directory, directory ? directory : DEFAULT_LOG_DIR, sizeof(logger->directory)-1);
+    strncpy(logger->title_name, log_title ? log_title : DEFAULT_LOG_TITLE, sizeof(logger->title_name)-1);
     logger->max_rotation = max_rotation;
     logger->max_size = max_size;
 
