@@ -197,7 +197,6 @@ void loc_curl_cleanup() {
 
 static void registerUnregisterFds() {
   int fd, fdMax;
-  LS_LOG_DEBUG("Fun: %s Line: %d start\n", __FUNCTION__, __LINE__);
   FD_ZERO(&curlSrc->fdRead);
   FD_ZERO(&curlSrc->fdWrite);
   FD_ZERO(&curlSrc->fdExc);
@@ -248,14 +247,12 @@ static void registerUnregisterFds() {
   }
 
   curlSrc->lastPollFdMax = curlSrc->fdMax;
-  LS_LOG_DEBUG("Fun: %s Line: %d end\n", __FUNCTION__, __LINE__);
 }
 
 /* Called before all the file descriptors are polled by the glib main loop.
    We must have a look at all fds that libcurl wants polled. If any of them
    are new/no longer needed, we have to (de)register them with glib. */
 gboolean prepare(GSource* source, gint* timeout) {
-  LS_LOG_DEBUG("Fun: %s Line: %d start \n", __FUNCTION__, __LINE__);
   assert(source == &curlSrc->source);
 
   if (curlSrc->multiHandle == 0) return FALSE;
@@ -297,7 +294,6 @@ gboolean prepare(GSource* source, gint* timeout) {
    libcurl's fd_sets! */
 gboolean check(GSource* source) {
   int fd, somethingHappened = 0;
-  LS_LOG_DEBUG("Fun: %s Line: %d start \n", __FUNCTION__, __LINE__);
   assert(source == &curlSrc->source);
 
   if (curlSrc->multiHandle == 0 || s_numEasyHandles <= 0) {
