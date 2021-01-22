@@ -80,7 +80,6 @@ int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted)
     if (1 != fread(cipher, cipherLen, 1, inFile))
         goto CLEANUP;
 
-    cipher[sizeof(cipher)-1] = '\0';
     clrdst[0] = '\0';
     phase = 0;
     index=0;
@@ -103,6 +102,7 @@ int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted)
      index++;
     }//end of while
 
+    clrdst[index] = '\0';
     *decrypted = (unsigned char *)strdup(clrdst);
 
     err = LOC_SECURITY_ERROR_SUCCESS;
