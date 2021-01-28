@@ -1,4 +1,4 @@
-// Copyright (c) 2020 LG Electronics, Inc.
+// Copyright (c) 2020-2021 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,19 +42,54 @@ void decodeblock(unsigned char in[], char *clrstr)
 
 }
 
-int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted)
+int locSecurityBase64DecodeData(const char *encoded_data, unsigned char **decrypted)
 {
     int asciival = 0;
     int phase = 0;
     int index = 0;
-    int cipherLen = 0;
-    int err = LOC_SECURITY_ERROR_FAILURE;
     char *charval = 0;
-    unsigned char *cipher = NULL;
     char clrdst[1024] = "";
     unsigned char decoderinput[4] = "";
-    FILE *inFile = NULL;
     char encodingtabe[TABLELEN + 2] = BASE64CHARSET;
+    int dataLen = strlen(encoded_data);
+
+    if (dataLen < 0)
+		  return LOC_SECURITY_ERROR_FAILURE;
+
+    clrdst[0] = '\0';
+    phase = 0;
+    index=0;
+    while(encoded_data[index]) {
+
+        asciival = (int) encoded_data[index];
+        if(PADDINGCHAR == asciival) {
+            decodeblock(decoderinput, clrdst);
+            break;
+        }
+     charval = strchr(encodingtabe, asciival);
+     if(charval) {
+            decoderinput[phase] = charval - encodingtabe;
+            phase = (phase + 1) % 4;
+            if(phase == 0) {
+                decodeblock(decoderinput, clrdst);
+          decoderinput[0]=decoderinput[1]=decoderinput[2]=decoderinput[3]=0;
+            }
+        }
+     index++;
+    }//end of while
+
+    clrdst[index] = '\0';
+    *decrypted = (unsigned char *)strdup(clrdst);
+
+    return LOC_SECURITY_ERROR_SUCCESS;
+}
+
+int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted)
+{
+    int cipherLen = 0;
+    int err = LOC_SECURITY_ERROR_FAILURE;
+    unsigned char *cipher = NULL;
+    FILE *inFile = NULL;
 
     if (!file_path)
         return LOC_SECURITY_ERROR_FAILURE;
@@ -80,33 +115,7 @@ int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted)
     if (1 != fread(cipher, cipherLen, 1, inFile))
         goto CLEANUP;
 
-    clrdst[0] = '\0';
-    phase = 0;
-    index=0;
-    while(cipher[index]) {
-
-        asciival = (int) cipher[index];
-        if(PADDINGCHAR == asciival) {
-            decodeblock(decoderinput, clrdst);
-            break;
-        }
-     charval = strchr(encodingtabe, asciival);
-     if(charval) {
-            decoderinput[phase] = charval - encodingtabe;
-            phase = (phase + 1) % 4;
-            if(phase == 0) {
-                decodeblock(decoderinput, clrdst);
-          decoderinput[0]=decoderinput[1]=decoderinput[2]=decoderinput[3]=0;
-            }
-        }
-     index++;
-    }//end of while
-
-    clrdst[index] = '\0';
-    *decrypted = (unsigned char *)strdup(clrdst);
-
-    err = LOC_SECURITY_ERROR_SUCCESS;
-
+    err = locSecurityBase64DecodeData(cipher, decrypted);
 
 CLEANUP:
 

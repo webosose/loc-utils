@@ -1,4 +1,4 @@
-// Copyright (c) 2020 LG Electronics, Inc.
+// Copyright (c) 2020-2021 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ extern "C" {
 
 
 // base64 - Decryption
+int locSecurityBase64DecodeData(const char *encoded_data, unsigned char **decrypted);
 int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted);
 
 
