@@ -113,7 +113,7 @@ int locSecurityBase64Decode(const char *file_path, unsigned char **decrypted)
         goto CLEANUP;
 
     /* copy the file into the buffer  */
-    readSize = fread(cipher, cipherLen, 1, inFile);
+    readSize = fread(cipher, 1, cipherLen, inFile);
 
     cipher[readSize]='\0';
 
