@@ -1,4 +1,4 @@
-// Copyright (c) 2020 LG Electronics, Inc.
+// Copyright (c) 2020-2021 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -492,7 +492,7 @@ double footpoint_latitude(double northingInMeters)
 
 UTMCoordinates wgs84_to_tm(GEOCoordinates radCoordinates, double centralMeridian)
 {
-    UTMCoordinates tmCoordinates;
+    UTMCoordinates tmCoordinatesi = {0};
 
     double N, nu2, ep2, t, t2, l;
     double l3coef, l4coef, l5coef, l6coef, l7coef, l8coef;
