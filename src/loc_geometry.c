@@ -492,7 +492,7 @@ double footpoint_latitude(double northingInMeters)
 
 UTMCoordinates wgs84_to_tm(GEOCoordinates radCoordinates, double centralMeridian)
 {
-    UTMCoordinates tmCoordinatesi = {0};
+    UTMCoordinates tmCoordinates = {0};
 
     double N, nu2, ep2, t, t2, l;
     double l3coef, l4coef, l5coef, l6coef, l7coef, l8coef;
