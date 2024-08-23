@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <string.h>
+#include <fcntl.h>
 #include <loc_logger.h>
 
 #define MAX_DIR_PATH            64
@@ -159,8 +160,11 @@ void loc_logger_start_logging_with_rotation(data_logger_t **logger_ref,
     while (current_rotation < max_rotation) {
         snprintf(file_path, sizeof(file_path), "%s/%s.%d", logger->directory, logger->title_name, current_rotation);
 
-        if (access(file_path, R_OK) != 0)
+        int fd = open(file_path, O_RDONLY);
+        if (fd != -1) {
+            close(fd);
             break;
+        }
 
         current_rotation++;
     }
@@ -169,6 +173,11 @@ void loc_logger_start_logging_with_rotation(data_logger_t **logger_ref,
 
     snprintf(file_path, sizeof(file_path), "%s/%s", logger->directory, logger->title_name);
     logger->log_handle = fopen(file_path, "a");
+
+    if (!logger->log_handle) {
+        perror("fopen");
+        return;
+    }
 }
 
 void loc_logger_stop_logging(data_logger_t **logger_ref)
